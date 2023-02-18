@@ -2,6 +2,7 @@ package rw.jazzyBruno.todo.v1.serviceImpls;
 
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import rw.jazzyBruno.todo.v1.models.Todo;
 import rw.jazzyBruno.todo.v1.models.User;
@@ -76,6 +77,28 @@ public class TodoServiceImpl {
       }
 
     };
+
+    public void mapTodo(Todo todo , Todo todoNew){
+        todo.setContent(todoNew.getContent());
+        todo.setPhoto(todoNew.getPhoto());
+        todo.setTime_finish(todoNew.getTime_finish());
+        todo.setDone(todoNew.isDone());
+    }
+
+    @Transactional
+    public Todo updateTodo( Long todo_id , Todo todo) throws Exception{
+        if(todoRepository.existsById(todo_id)){
+             Todo todo1 = (todoRepository.findById(todo_id)).get();
+             try {
+                 mapTodo(todo1 , todo);
+                 return todo1;
+             }catch (Exception e){
+                 throw new Exception("Failed to delete the todo with id: " + todo_id);
+             }
+        }else {
+            throw new Exception("The todo with id: " + todo_id + " does not exist");
+        }
+    }
 
     public Todo deleteTodo(Long todo_id) throws Exception {
         if (todoRepository.existsById(todo_id)) {

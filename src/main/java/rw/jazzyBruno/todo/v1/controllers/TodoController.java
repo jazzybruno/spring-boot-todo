@@ -37,6 +37,11 @@ public class TodoController {
         return todoService.addTodo(todo);
     }
 
+    @PutMapping("/{todo_id}")
+    public Todo updateTodo( @PathVariable Long todo_id ,  @RequestBody Todo todo) throws Exception{
+        return todoService.updateTodo(todo_id ,  todo);
+    }
+
     @DeleteMapping("/{todo_id}")
     public Todo deleteTodo(@PathVariable Long todo_id) throws Exception{
         return todoService.deleteTodo(todo_id);
