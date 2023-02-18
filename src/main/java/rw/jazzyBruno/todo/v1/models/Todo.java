@@ -1,7 +1,7 @@
 package rw.jazzyBruno.todo.v1.models;
 
 import com.sun.istack.NotNull;
-import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,16 +14,22 @@ public class Todo {
     private Long todo_id;
     @Column(name = "content")
     @NotNull
+    @ApiModelProperty( name = "The content of the todo")
     private String content;
 
+    @ApiModelProperty(name = "The image of the task if neccessary")
     private String photo;
     @NotNull
+    @ApiModelProperty(name = "The time the date was added")
     private LocalDate added_time;
     @NotNull
+    @ApiModelProperty(name = "the time it will be finished")
     private LocalDate time_finish;
     @NotNull
+    @ApiModelProperty(name = "The status of the todo if it is done or not")
     private boolean isDone;
     @ManyToOne
+    @ApiModelProperty(name = "The user who has created the task")
     @JoinColumn(name = "user_id")
     private User user;
 
