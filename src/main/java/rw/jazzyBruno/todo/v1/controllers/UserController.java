@@ -45,4 +45,9 @@ public class UserController {
     public Optional<User> deleteUser(@PathVariable Long user_id) throws Exception{
         return userService.deleteUser(user_id);
     }
+
+    @PutMapping("/{user_id}")
+    public User updateUser(@RequestBody User user , @PathVariable Long user_id) throws Exception{
+        return userService.updateUser(user , user_id);
+    }
 }

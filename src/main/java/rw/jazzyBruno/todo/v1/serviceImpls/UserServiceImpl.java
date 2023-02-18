@@ -1,6 +1,8 @@
 package rw.jazzyBruno.todo.v1.serviceImpls;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import rw.jazzyBruno.todo.v1.models.User;
 import rw.jazzyBruno.todo.v1.repositories.UserRepository;
 import rw.jazzyBruno.todo.v1.services.UserService;
@@ -85,6 +87,26 @@ public class UserServiceImpl implements UserService {
              }catch (Exception e){
                  throw new Exception("Failed to delete the user with id: " + user_id);
              }
+        }else{
+            throw new Exception("The user with id: " + user_id + " does not exist");
+        }
+    }
+
+    // updating the user in the database
+    public void mapUser(User user , User user1){
+        user.setUsername(user1.getUsername());
+        user.setDob(user1.getDob());
+        user.setEmail(user1.getEmail());
+        user.setPassword(user1.getPassword());
+        user.setGithubProfile(user1.getGithubProfile());
+    }
+
+    public User updateUser(@RequestBody User user , @PathVariable Long user_id) throws Exception{
+        if(userRepository.existsById(user_id)){
+            Optional<User> user1 = userRepository.findById(user_id);
+            User user2 = user1.get();
+            mapUser(user2 , user);
+            return user2;
         }else{
             throw new Exception("The user with id: " + user_id + " does not exist");
         }
