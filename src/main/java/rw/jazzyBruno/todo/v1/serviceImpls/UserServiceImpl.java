@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import rw.jazzyBruno.todo.v1.models.User;
 import rw.jazzyBruno.todo.v1.repositories.UserRepository;
 import rw.jazzyBruno.todo.v1.services.UserService;
+import rw.jazzyBruno.todo.v1.utils.PasswordUtility;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -51,9 +52,12 @@ public class UserServiceImpl implements UserService {
 
     public User addUser(User user) throws Exception{
       Optional<User> optional = userRepository.findUserByEmail(user.getEmail());
-      if(optional == null){
+      if(optional != null){
           Optional optional1 = userRepository.findUserByUsername(user.getUsername());
-          if(optional1 == null){
+          if(optional1 != null){
+              // hashing the password
+              PasswordUtility passwordUtility = new PasswordUtility();
+              user.setPassword(passwordUtility.hashPassword(user.getPassword()));
               userRepository.save(user);
               return user;
           }else {
