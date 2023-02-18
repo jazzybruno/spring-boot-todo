@@ -1,14 +1,20 @@
 package rw.jazzyBruno.todo.v1.models;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
 public class Todo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long todo_id;
     private String content;
     private String photo;
     private LocalDate added_time;
     private LocalDate time_finish;
     private boolean isDone;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Todo(){
