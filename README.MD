@@ -33,3 +33,6 @@ go to applcation.properties and add the port configuration
 ```bash
 server.port = {the_port_you_choose}
 ```
+
+You should get a page like this:
+![Screenshot 2023-02-18 130829.png](..%2F..%2FOneDrive%2FDesktop%2FScreenshot%202023-02-18%20130829.png)
