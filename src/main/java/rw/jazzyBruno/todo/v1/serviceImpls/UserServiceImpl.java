@@ -67,4 +67,18 @@ public class UserServiceImpl implements UserService {
           throw new Exception("The user with the given email already exists");
       }
     }
+
+    public Optional<User> deleteUser(Long user_id) throws Exception{
+        if (userRepository.existsById(user_id)){
+             try {
+                 Optional<User> user = userRepository.findById(user_id);
+                 userRepository.delete(user.get());
+                 return user;
+             }catch (Exception e){
+                 throw new Exception("Failed to delete the user with id: " + user_id);
+             }
+        }else{
+            throw new Exception("The user with id: " + user_id + " does not exist");
+        }
+    }
 }

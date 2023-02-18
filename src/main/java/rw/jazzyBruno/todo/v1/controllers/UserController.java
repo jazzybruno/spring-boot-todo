@@ -3,6 +3,7 @@ package rw.jazzyBruno.todo.v1.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import rw.jazzyBruno.todo.v1.models.User;
+import rw.jazzyBruno.todo.v1.repositories.UserRepository;
 import rw.jazzyBruno.todo.v1.serviceImpls.UserServiceImpl;
 
 import java.util.List;
@@ -13,9 +14,12 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private final UserServiceImpl userService;
+    private final UserRepository userRepository;
 
-    public UserController(UserServiceImpl userService){
+    public UserController(UserServiceImpl userService,
+                          UserRepository userRepository){
         this.userService = userService;
+        this.userRepository = userRepository;
     }
     @GetMapping
     public List<User> getAllUsers() throws Exception{
@@ -35,5 +39,10 @@ public class UserController {
     @PostMapping
     public User addUser(@RequestBody User user) throws Exception{
         return userService.addUser(user);
+    }
+
+    @DeleteMapping("/{user_id}")
+    public Optional<User> deleteUser(@PathVariable Long user_id) throws Exception{
+        return userService.deleteUser(user_id);
     }
 }
