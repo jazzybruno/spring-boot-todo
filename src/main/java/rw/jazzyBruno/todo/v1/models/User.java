@@ -3,7 +3,7 @@ package rw.jazzyBruno.todo.v1.models;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
-
+import rw.jazzyBruno.todo.v1.enums.gender;
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -24,7 +24,7 @@ public class User {
     @ApiModelProperty(name = "The gender of the user")
     @NotNull
     @Enumerated(EnumType.STRING)
-    private String gender;
+    private gender gender;
     @ApiModelProperty(name = "The github profile to get the profile picture")
     @NotNull
     private String githubProfile;
@@ -38,7 +38,7 @@ public class User {
     public User(){
 
     }
-    public User(String username, String email, String githubProfile, String gender , LocalDate dob, String password) {
+    public User(String username, String email, String githubProfile, gender gender , LocalDate dob, String password) {
         this.username = username;
         this.email = email;
         this.githubProfile = githubProfile;
@@ -87,11 +87,11 @@ public class User {
         this.dob = dob;
     }
 
-    public String getGender() {
+    public gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(gender gender) {
         this.gender = gender;
     }
 
