@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 
     Optional<List<Todo>> findByUser(User user);
+    Optional<Todo> findByContent(String content);
 }

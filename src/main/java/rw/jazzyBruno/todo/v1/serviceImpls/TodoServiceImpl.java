@@ -2,6 +2,7 @@ package rw.jazzyBruno.todo.v1.serviceImpls;
 
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 import rw.jazzyBruno.todo.v1.models.Todo;
 import rw.jazzyBruno.todo.v1.models.User;
 import rw.jazzyBruno.todo.v1.repositories.TodoRepository;
@@ -17,30 +18,76 @@ public class TodoServiceImpl {
     private final UserRepository userRepository;
 
     public TodoServiceImpl(TodoRepository todoRepository,
-                           UserRepository userRepository){
+                           UserRepository userRepository) {
         this.todoRepository = todoRepository;
         this.userRepository = userRepository;
     }
 
-    public List<Todo> getAllTodos() throws Exception{
+    public List<Todo> getAllTodos() throws Exception {
         try {
             return todoRepository.findAll();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new Exception("Failed to fetching all users");
         }
+    }
+
+    ;
+
+    public List<Todo> getTodosByUser(Long user_id) throws Exception {
+        if (userRepository.existsById(user_id)) {
+            try {
+                User user = (userRepository.findById(user_id)).get();
+                List<Todo> todos = (todoRepository.findByUser(user)).get();
+                return todos;
+            } catch (Exception e) {
+                throw new Exception("Failed to fetch todos for user with id: " + user_id);
+            }
+        } else {
+            throw new Exception("The user with id: " + user_id + " does not exist");
+        }
+    }
+
+    ;
+
+    public Todo getTodoById(@PathVariable Long todo_id) throws Exception {
+        if (todoRepository.existsById(todo_id)) {
+            try {
+                Todo todo = (todoRepository.findById(todo_id)).get();
+                return todo;
+            } catch (Exception e) {
+                throw new Exception("Failed to fetch the todo with id: " + todo_id);
+            }
+        } else {
+            throw new Exception("The tod with id: " + todo_id + " does not exist");
+        }
+    }
+
+    public Todo addTodo(Todo todo) throws Exception{
+      Todo todo1 = (todoRepository.findByContent(todo.getContent())).get();
+      if(todo1 == null){
+          try {
+               todoRepository.save(todo);
+               return todo;
+          }catch (Exception e){
+              throw new Exception("Failed to add a todo");
+          }
+      }else{
+          throw new Exception("This todo already exists");
+      }
+
     };
 
-    public List<Todo> getTodosByUser( Long user_id) throws Exception{
-       if (userRepository.existsById(user_id)){
-           try {
-               User user  = (userRepository.findById(user_id)).get();
-               List<Todo> todos = (todoRepository.findByUser(user)).get();
-               return todos;
-           }catch (Exception e){
-               throw new Exception("Failed to fetch todos for user with id: " + user_id);
-           }
-       }else {
-           throw new Exception("The user with id: " + user_id + " does not exist");
-       }
-    };
+    public Todo deleteTodo(Long todo_id) throws Exception {
+        if (todoRepository.existsById(todo_id)) {
+            Todo todo = (todoRepository.findById(todo_id)).get();
+            try {
+                todoRepository.deleteById(todo_id);
+                return todo;
+            } catch (Exception e) {
+                throw new Exception("Failed to delete the todo with id: " + todo_id);
+            }
+        } else {
+            throw new Exception("The tod with id: " + todo_id + " does not exist");
+        }
+    }
 }
