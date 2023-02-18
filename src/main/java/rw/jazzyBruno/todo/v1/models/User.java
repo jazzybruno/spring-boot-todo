@@ -1,21 +1,38 @@
 package rw.jazzyBruno.todo.v1.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.sun.istack.NotNull;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "users" , uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @ApiModelProperty(notes = "The user id")
     private Long id;
+    @ApiModelProperty(name = "The username for the user")
+    @NotNull
     private String username;
+    @ApiModelProperty(name = "The email for the user ")
+    @NotNull
+    @Column(name = "email")
     private String email;
+    @ApiModelProperty(name = "The gender of the user")
+    @NotNull
+    @Enumerated(EnumType.STRING)
     private String gender;
+    @ApiModelProperty(name = "The github profile to get the profile picture")
+    @NotNull
     private String githubProfile;
+    @ApiModelProperty(name = "The date of birth of the user")
+    @NotNull
     private LocalDate dob;
+    @ApiModelProperty(name = "The password of the user")
+    @NotNull
     private String password;
 
     public User(){
