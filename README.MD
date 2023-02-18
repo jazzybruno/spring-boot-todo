@@ -35,4 +35,4 @@ server.port = {the_port_you_choose}
 ```
 
 You should get a page like this:
-![Screenshot 2023-02-18 130829.png](..%2F..%2FOneDrive%2FDesktop%2FScreenshot%202023-02-18%20130829.png)
+![Screenshot  2023-02-18 130829.png](src%2Fmain%2Fresources%2Fimages%2FScreenshot%202023-02-18%20130829.png)
