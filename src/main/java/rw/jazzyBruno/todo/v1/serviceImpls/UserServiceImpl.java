@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import rw.jazzyBruno.todo.v1.models.User;
 import rw.jazzyBruno.todo.v1.repositories.UserRepository;
 import rw.jazzyBruno.todo.v1.services.UserService;
+import rw.jazzyBruno.todo.v1.utils.DataValidation;
 import rw.jazzyBruno.todo.v1.utils.PasswordUtility;
 
 import java.sql.SQLException;
@@ -50,23 +51,30 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public User addUser(User user) throws Exception{
-      Optional<User> optional = userRepository.findUserByEmail(user.getEmail());
-      if(optional != null){
-          Optional optional1 = userRepository.findUserByUsername(user.getUsername());
-          if(optional1 != null){
-              // hashing the password
-              PasswordUtility passwordUtility = new PasswordUtility();
-              user.setPassword(passwordUtility.hashPassword(user.getPassword()));
-              userRepository.save(user);
-              return user;
-          }else {
-              throw new Exception("The user with the given email does not exist");
-          }
-      }else{
-          throw new Exception("The user with the given email already exists");
-      }
+    public User addUser(User user) throws Exception {
+        DataValidation dataValidation = new DataValidation();
+        String userValidation = dataValidation.userValidation(user);
+        if (userValidation.equals("isValid")) {
+            Optional<User> optional = userRepository.findUserByEmail(user.getEmail());
+            if (optional != null) {
+                Optional optional1 = userRepository.findUserByUsername(user.getUsername());
+                if (optional1 != null) {
+                    // hashing the password
+                    PasswordUtility passwordUtility = new PasswordUtility();
+                    user.setPassword(passwordUtility.hashPassword(user.getPassword()));
+                    userRepository.save(user);
+                    return user;
+                } else {
+                    throw new Exception("The user with the given email does not exist");
+                }
+            } else {
+                throw new Exception("The user with the given email already exists");
+            }
+        } else {
+          throw new Exception(userValidation);
+        }
     }
+
 
     public Optional<User> deleteUser(Long user_id) throws Exception{
         if (userRepository.existsById(user_id)){

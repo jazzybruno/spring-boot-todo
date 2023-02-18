@@ -26,7 +26,7 @@ public class UserController {
        return userService.getAllUsers();
     }
 
-    @GetMapping("/{user_id}")
+    @GetMapping("/user/{user_id}")
     public Optional<User> getUserById(@PathVariable Long user_id) throws Exception{
          return userService.getUserById(user_id);
     }

@@ -1,4 +1,4 @@
-# Spring Todo
+# Spring Boot Todo
 
 A simple spring boot todo backend application that 
 enables you to manage your todos
