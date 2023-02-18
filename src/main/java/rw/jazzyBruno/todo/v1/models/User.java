@@ -13,7 +13,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @ApiModelProperty(notes = "The user id")
-    private Long id;
+    private Long user_id;
     @ApiModelProperty(name = "The username for the user")
     @NotNull
     private String username;
@@ -48,11 +48,11 @@ public class User {
     }
 
     public Long getId() {
-        return id;
+        return user_id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.user_id = id;
     }
 
     public String getUsername() {

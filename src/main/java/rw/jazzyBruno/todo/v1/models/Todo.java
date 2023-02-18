@@ -1,17 +1,27 @@
 package rw.jazzyBruno.todo.v1.models;
 
+import com.sun.istack.NotNull;
+import io.swagger.annotations.ApiModel;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "todos" , uniqueConstraints = {@UniqueConstraint(columnNames = {("content")})})
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long todo_id;
+    @Column(name = "content")
+    @NotNull
     private String content;
+
     private String photo;
+    @NotNull
     private LocalDate added_time;
+    @NotNull
     private LocalDate time_finish;
+    @NotNull
     private boolean isDone;
     @ManyToOne
     @JoinColumn(name = "user_id")
