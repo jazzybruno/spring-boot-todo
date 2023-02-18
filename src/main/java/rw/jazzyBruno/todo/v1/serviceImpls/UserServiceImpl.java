@@ -5,6 +5,7 @@ import rw.jazzyBruno.todo.v1.models.User;
 import rw.jazzyBruno.todo.v1.repositories.UserRepository;
 import rw.jazzyBruno.todo.v1.services.UserService;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,5 +38,29 @@ public class UserServiceImpl implements UserService {
         }else{
             throw new Exception("The user with id " + user_id + " does not exist");
         }
+    }
+
+    public Optional<User> getUserByUsername(String username) throws Exception{
+        try {
+            Optional<User> user =   userRepository.findUserByUsername(username);
+            return user;
+        }catch (Exception e){
+            throw new Exception("User with username " + username + " does not exist");
+        }
+    }
+
+    public User addUser(User user) throws Exception{
+      Optional<User> optional = userRepository.findUserByEmail(user.getEmail());
+      if(optional == null){
+          Optional optional1 = userRepository.findUserByUsername(user.getUsername());
+          if(optional1 == null){
+              userRepository.save(user);
+              return user;
+          }else {
+              throw new Exception("The user with the given email does not exist");
+          }
+      }else{
+          throw new Exception("The user with the given email already exists");
+      }
     }
 }

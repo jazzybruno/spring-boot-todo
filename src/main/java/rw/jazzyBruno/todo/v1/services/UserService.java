@@ -10,4 +10,7 @@ import java.util.Optional;
 public interface UserService {
     public List<User> getAllUsers() throws Exception;
     public Optional<User> getUserById(Long user_id) throws Exception;
+    public Optional<User> getUserByUsername(String username) throws Exception;
+
+    public User addUser(User user) throws Exception;
 }

@@ -1,14 +1,13 @@
 package rw.jazzyBruno.todo.v1.models;
 
 import com.sun.istack.NotNull;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import rw.jazzyBruno.todo.v1.enums.gender;
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "users" , uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
+@Table(name = "users" , uniqueConstraints = {@UniqueConstraint(columnNames = {"email"}) , @UniqueConstraint(columnNames = {"username"})})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,6 +15,7 @@ public class User {
     private Long user_id;
     @ApiModelProperty(name = "The username for the user")
     @NotNull
+    @Column(name = "username")
     private String username;
     @ApiModelProperty(name = "The email for the user ")
     @NotNull
