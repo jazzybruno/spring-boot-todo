@@ -1,9 +1,12 @@
 package rw.jazzyBruno.todo.v1.utils;
 
+import rw.jazzyBruno.todo.v1.models.Todo;
 import rw.jazzyBruno.todo.v1.models.User;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,4 +55,31 @@ public class DataValidation {
             }
         }
     }
+
+    // the validation of a todo to be saved
+
+    //the date validation in java
+    public static boolean isValidDate(String inputDate) {
+        String format = "yyyy-MM-dd";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        dateFormat.setLenient(false); // Set leniency to false to enforce strict date validation
+        try {
+            Date date = dateFormat.parse(inputDate);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+      public String todoValidation(Todo todo){
+         if(todo.getContent().isEmpty() || todo.getContent().length() < 5 || todo.getContent().length() > 10 ){
+             return "The content of the todo should be between 5 and 10";
+         }else{
+             if(isValidDate(todo.getTime_finish().toString())){
+                 return "The time to finish should be a valid date";
+             }else{
+                return "isValid";
+             }
+         }
+      }
 }
