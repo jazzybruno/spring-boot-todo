@@ -8,6 +8,7 @@ import rw.jazzyBruno.todo.v1.models.Todo;
 import rw.jazzyBruno.todo.v1.models.User;
 import rw.jazzyBruno.todo.v1.repositories.TodoRepository;
 import rw.jazzyBruno.todo.v1.repositories.UserRepository;
+import rw.jazzyBruno.todo.v1.utils.DataValidation;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +32,6 @@ public class TodoServiceImpl {
             throw new Exception("Failed to fetching all users");
         }
     }
-
     ;
 
     public List<Todo> getTodosByUser(Long user_id) throws Exception {
@@ -64,17 +64,26 @@ public class TodoServiceImpl {
     }
 
     public Todo addTodo(Todo todo) throws Exception{
-      Todo todo1 = (todoRepository.findByContent(todo.getContent())).get();
-      if(todo1 == null){
-          try {
-               todoRepository.save(todo);
-               return todo;
-          }catch (Exception e){
-              throw new Exception("Failed to add a todo");
-          }
-      }else{
-          throw new Exception("This todo already exists");
-      }
+        DataValidation validation = new DataValidation();
+        String validate = validation.todoValidation(todo);
+        if(validate.equals("isValid")){
+            if(userRepository.existsById(todo.getUser().getId())){
+            Todo todo1 = (todoRepository.findByContent(todo.getContent())).get();
+            if(todo1 == null){
+                try {
+                    todoRepository.save(todo);
+                    return todo;
+                }catch (Exception e){
+                    throw new Exception("Failed to add a todo");
+                }
+            }else{
+                throw new Exception("This todo already exists");
+            }}else{
+                throw new Exception("The user provided does not exist");
+            }
+        }else{
+            throw new Exception(validate);
+        }
 
     };
 
@@ -87,17 +96,23 @@ public class TodoServiceImpl {
 
     @Transactional
     public Todo updateTodo( Long todo_id , Todo todo) throws Exception{
-        if(todoRepository.existsById(todo_id)){
-             Todo todo1 = (todoRepository.findById(todo_id)).get();
-             try {
-                 mapTodo(todo1 , todo);
-                 return todo1;
-             }catch (Exception e){
-                 throw new Exception("Failed to delete the todo with id: " + todo_id);
-             }
-        }else {
-            throw new Exception("The todo with id: " + todo_id + " does not exist");
-        }
+        DataValidation dataValidation = new DataValidation();
+       String validate =  dataValidation.todoValidation(todo);
+       if(validate.equals("isValid")){
+           if(todoRepository.existsById(todo_id)){
+               Todo todo1 = (todoRepository.findById(todo_id)).get();
+               try {
+                   mapTodo(todo1 , todo);
+                   return todo1;
+               }catch (Exception e){
+                   throw new Exception("Failed to delete the todo with id: " + todo_id);
+               }
+           }else {
+               throw new Exception("The todo with id: " + todo_id + " does not exist");
+           }
+       }else{
+           throw new Exception(validate);
+       }
     }
 
     public Todo deleteTodo(Long todo_id) throws Exception {
