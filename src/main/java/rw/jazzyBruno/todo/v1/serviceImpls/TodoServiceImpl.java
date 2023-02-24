@@ -48,8 +48,6 @@ public class TodoServiceImpl {
         }
     }
 
-    ;
-
     public Todo getTodoById(@PathVariable Long todo_id) throws Exception {
         if (todoRepository.existsById(todo_id)) {
             try {

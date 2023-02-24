@@ -8,7 +8,6 @@ import rw.jazzyBruno.todo.v1.serviceImpls.UserServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
